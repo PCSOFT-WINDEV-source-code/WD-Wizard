@@ -1,0 +1,101 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : WD Wizard
+ major_version : 28
+ minor_version : 0
+ type : 4097
+ description : "'WD Wizard' Project"
+ subtype : 0
+project :
+ identifier : 0x0
+ internal_properties : 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
+ configurations :
+  -
+    name : WD Wizard
+    internal_properties : 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
+    configuration_id : 2574630898263385568
+    type : 1
+    generation_name : WD Wizard.exe
+    version :
+     major_version : 22
+     generation_version : 1
+     internal_generation_version : 3
+    icon_filename : .\description.ico
+    language : 2
+ elements :
+  identifier : 0x4acc540f0011dae4
+  elements :
+   -
+     name : WIN_Wizard
+     identifier : 0x3e3009bc781c3dfa
+     internal_properties : CAAAAAgAAAAdeXUplsNrdMOSLoqIzeZLl7TiSrgjGyyR27Ou8Ctjlae5sBAH+bqtrJYA+Lgo0MAICA==
+     physical_name : .\WIN_Wizard.wdw
+     type : 2
+   -
+     name : cWizard
+     identifier : 0x416a498d00045b0b
+     internal_properties : CAAAAAgAAACKgPKWFVLahUIRqRU7WW/UOAn3H91zmMbYeMIbeMNR79k5OoacbDcoKxWPaSmnU0WPlw==
+     physical_name : .\cWizard.wdc
+     type : 4
+   -
+     name : Template_WizardWin
+     identifier : 0x456329da00003610
+     internal_properties : CAAAAAgAAACLh/OXFFHZgk0QqBAGL/xF1VLoiEhaZwuKnF7DIOUx/znrQo6ZbzQnKhSOaiqmUkaOlg==
+     physical_name : .\Template_WizardWin.wdt
+     type : 18
+   -
+     name : TEST_Wizard
+     identifier : 0x49f84343000080e1
+     internal_properties : CAAAAAgAAAB51aHlwr/3+EcGog4MVGrXEyayetB7uEOOPwJBO9405Bg0OYeTdT4xIBqEfAT8hHRc5A==
+     physical_name : .\TEST_Wizard.wxt
+     type : 17
+  other_elements :
+   -
+     physical_name : .\Description.rtf
+   -
+     physical_name : .\Description.gif
+  net_assemblies : []
+  uwp_api : []
+  external_components : []
+  internal_components : []
+ report_and_queries_enabled : false
+ common_generation_directory : true
+ languages :
+  - en-GB
+ code_elements :
+  internal_properties : CAAAAAgAAAD8Qmb1Clp3bAGs/JmJBV0YQgo0T7TH2xUbou0/S8KnfQQHwreo25lNTpwlf+i8ng7e7X02W2/ndZuKITdrdX4lwi9Kv9KFDHTDKXFCEQCCOv8/wGzMjNs=
+  type_code : 0
+  p_codes :
+   -
+     code : |1-
+      
+     type : 196608
+   -
+     type : 196621
+   -
+     type : 196627
+     enabled : false
+  orphans :
+   -
+     name : WD Wizard
+     identifier : 0x4acc540f0017db71
+     code_elements :
+      type_code : 159
+      p_codes : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+rad :
+ internal_properties : CAAAAAgAAABhIL0UXeZmxDJxY3Xy0Q==
+project_explorer :
+ explorer_type : project
+ children :
+  -
+    name : Windows Store Apps API
+    explorer_type : custom_folder
+resources :
+ string_res :
+  identifier : 0x0
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+custom_note :
+ internal_properties : CAAAAAgAAAAd98VSJfHHqE3P0QHwrwdhn7ig8dWBR6valpUTgnAMTVXiDg==

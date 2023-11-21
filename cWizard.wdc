@@ -1,0 +1,262 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : cWizard
+ major_version : 28
+ minor_version : 0
+ type : 4
+ description : ""
+ subtype : 0
+class :
+ identifier : 0x16b1da8b0108c48b
+ internal_properties : CAAAAAgAAAB2/vstTMCJbS/hlxjFxirSqKvCUuv8YxgpWyl7S3iA
+ code_elements :
+  internal_properties : CAAAAAgAAABm4PVFe9JAHaoZ7pWrapr167xJBrSdz0axAnnnfYhOQaaZf6aFmw+87+hdnze0968KI3y7g0wMbri74fT3L3UE/39pGg==
+  type_code : 10
+  p_codes :
+   -
+     internal_properties : CAAAAAgAAAA9dyhie9WPgmV2A1wo05YvLac2AJ77L1/dPCdqTJGJEdcaCNytVuVt9nVzigi228RN+FiYhr5jt0MSmcqbtVExOIyVwLztddflj/sxeT8LlzZ85eTFoN/eFZ3WwSLGdl18pJgGwWXziU5ggdo=
+     code : |1-
+      cWizard is Class
+      	m_nActivePlane is int		 				// Number of the current plane (between 1 and 20)
+      	m_tabPlane is array static of 50 int		// Array containing the sequence of "previous" planes
+      	m_nIndPreviousPlane is int					// Subscript of the previous plane in the array
+      	
+      	// Manage the procedures and controls that can be called in the associated window
+      	m_AssociatedWindow	is champ
+      	m_PreviousButton	is champ
+      	m_NextButton		is Champ
+      	m_InitializationProcedure	is PROCEDURE
+      	m_FinalizationProcedure		is PROCEDURE
+      	m_CheckProcedure		is PROCEDURE
+      	m_ActionProcedure		is PROCEDURE
+      	m_NextProcedure		is PROCEDURE
+      	
+      END
+     type : 131072
+   -
+     code : |1-
+      
+     type : 131074
+  procedures :
+   -
+     name : Constructor
+     internal_properties : CAAAAAgAAAD985N3rmP3lSbGGBr6f6jxZaK3AfUcANTJm18pwM7UvLwjFc96Iyz/yzjNCtDsYGlY2ojxPfreYeZAjJA9oxy3ur/tgDd5cVkdP6izrw1sV8agO4nS4AQHeHaWRO2+1DkkGqymzwz3XxTarX9Eeebvp8J2jGO0tXyC+ujbzaarDs5rnUyFwSIxpp2otpLYlKho7A==
+     procedure_id : 1635328430264927371
+     type_code : 27
+     code : |1+
+      PROCEDURE Constructor(WizardWindow is champ, NamePreviousButton is champ, NameNextButton is champ,...
+      InitProcedure is PROCEDURE, EndProcedure is PROCEDURE, ...
+      CheckPlane is PROCEDURE, PlaneAction is PROCEDURE, DefineNext is PROCEDURE)
+      
+      :m_nIndPreviousPlane=0 			// no previous plane in the sequence table
+      
+      // Store the parameters
+      m_AssociatedWindow <- WizardWindow
+      m_PreviousButton <- NamePreviousButton
+      m_NextButton	<- NameNextButton
+      m_InitializationProcedure = InitProcedure
+      m_FinalizationProcedure	= EndProcedure
+      m_CheckProcedure	= CheckPlane
+      m_ActionProcedure = PlaneAction
+      m_NextProcedure = DefineNext
+     type : 589824
+   -
+     name : Destructor
+     procedure_id : 1635328430264992907
+     type_code : 28
+     code : |1+
+      PROCEDURE Destructor()
+     type : 655360
+   -
+     name : ChangePlane
+     procedure_id : 1635328430265058443
+     type_code : 12
+     code : |1+
+      PROCEDURE PRIVATE CWizard::ChangePlane(nPlane)
+      // Changes the current plane in the wizard window
+      
+      // check the position
+      IF nPlane<1 OR nPlane >20 THEN
+      	Error(<§$0000§>)	
+      ELSE
+      	// the <previous> button is grayed for the first plane
+      	IF nPlane=1 THEN  
+      		m_PreviousButton..State = Grayed
+      	ELSE
+      		m_PreviousButton..State = Active
+      	END
+      	
+      	// the <next> button becomes the <done> button for the last plane
+      	IF nPlane=20 THEN 
+      		
+      		m_NextButton..Caption=<§$0003§>
+      	ELSE
+      		m_NextButton..Caption=<§$0004§>
+      	END
+      	
+      	// activate the plane
+      	m_AssociatedWindow..Plane = nPlane
+      	
+      	// the current plane becomes the new plane
+      	:m_nActivePlane=nPlane
+      END
+      
+     type : 458752
+   -
+     name : Initialization
+     internal_properties : CAAAAAgAAADRphRiGJdPkZI1pdWLPbTK1b9mWIxdiZ1Qq802rNkyUOiqKJCLJUNUK2sBay6kI29FnDEnco/lhhKhr84UxwrMhRo8ITkmz1uNcc6VX3nLUGuizjC2HWiFBgtaD6MgTV7eBa8x14834DyHt68HEWdryMZm1mcdGMxWJTvTm41e3Q==
+     procedure_id : 1635328430265123979
+     type_code : 12
+     code : |1-
+      // Automatic process of exceptions:   run CASE EXCEPTION:
+      //
+      PROCEDURE VIRTUAL CWizard::Initialization()
+      
+      // General initialization (performed once at the beginning)
+      m_InitializationProcedure(0)
+      
+      // the wizard starts from plane 1
+      :ChangePlane(1)
+      
+      // Initialize the first plane
+      m_InitializationProcedure(1)
+      
+      
+      CASE EXCEPTION:
+      dbgAssert(False,"Check whether the local procedure is available"+CR+ExceptionInfo())
+      :ChangePlane(1)
+     type : 458752
+   -
+     name : OnCancel
+     procedure_id : 1635328430265189515
+     type_code : 12
+     code : |1+
+      // Procedure called by the "Cancel" button of the wizard
+      PROCEDURE VIRTUAL CWizard::OnCancel()
+      
+      // close the wizard
+      Close()
+      
+     type : 458752
+   -
+     name : OnPrevious
+     internal_properties : CAAAAAgAAACwA1NtXrfQ8weadPaQjmS6RxKYIh8VpcCwlW6dUrXr0aIxPiagQAHeWkPUlFHv9aFWlE08fHyFAWrYESSbHGuDPVn5yr8KVCzYyY+MOlbgTBUxE9Q+KA4QNYEYjUdhmCuZT0zHBULDsmfXUexadkq1ljmKad11LSk5ZXOV8u09b0HLICNAOnnHMa3eacgzS2uc3XeTjM1QxoBC/8K4fZmVpA==
+     procedure_id : 1635328430265255051
+     type_code : 12
+     code : |1+
+      // Automatic process of exceptions:   run CASE EXCEPTION:
+      //
+      PROCEDURE CWizard::OnPrevious()
+      // Method called by the "previous" button of the wizard
+      
+      // goes to the previous plane in the array of plane sequence
+      :ChangePlane(:m_tabPlane[:m_nIndPreviousPlane])
+      
+      // Initialize the new plane
+      m_InitializationProcedure(:m_nActivePlane)
+      
+      // decrement the subscript of the previous plane in the table for plane sequence
+      :m_nIndPreviousPlane--
+      
+      // check the subscipt
+      IF :m_nIndPreviousPlane<0 THEN  Error(<§$0001§>)
+      
+      
+      CASE EXCEPTION:
+      dbgAssert(False,"Check whether the local procedure is available"+CR+ExceptionInfo())	
+     type : 458752
+   -
+     name : OnNext
+     internal_properties : CAAAAAgAAABrCRmE/KEpUx7o+MIcUbwdJRTrFfc+dv95Bwf4a+ruHESbLaeSQ1xnq7AtMigUUPFYqmiRnTLWoS6A9NC9k1QHwpfluJ8p4cE928xfQ2mQE8psL3XmjLgTTJJ64FEKCLUYxuBiE/irW8hWQVuI9dqbuw76pkkVW67olFcMBI/GCwkEwLkopv0O5TIDE7VlBh7+eg==
+     procedure_id : 1635328430265320587
+     type_code : 12
+     code : |1+
+      // Automatic process of exceptions:   run CASE EXCEPTION:
+      //
+      PROCEDURE CWizard::OnNext()
+      // Method called by the "next" or "done" button of the wizard
+      
+      // check the bounds
+      IF (:m_nActivePlane < 1) OR (:m_nActivePlane > 20) THEN  Error(<§$0002§>)
+      
+      // if the plane check is invalid, remain on this plane
+      IF m_CheckProcedure(:m_nActivePlane)=False THEN  RETURN
+      
+      // if the last plane is reached
+      IF :m_nActivePlane=20 THEN 
+      	// Last action
+      	:OnDone()
+      ELSE
+      	// Starts the hourglass
+      	HourGlass(True)
+      	// Starts the action associated with the current plan ; if successful, goes to the next plan
+      	IF m_ActionProcedure(:m_nActivePlane) THEN 
+      		// add a previous plane into the array of plane sequencing
+      		:m_nIndPreviousPlane++
+      		
+      		// the previous plane is the current plane
+      		:m_tabPlane[:m_nIndPreviousPlane]=:m_nActivePlane
+      		
+      		// Go to the next plane
+      		:ChangePlane(m_NextProcedure(:m_nActivePlane))
+      		// Call the function for initializing the new plan
+      		m_InitializationProcedure(:m_nActivePlane)
+      	END
+      	// Disable the hourglass
+      	HourGlass(False)
+      END
+      
+      
+      CASE EXCEPTION:
+      dbgAssert(False,"Check whether the local procedures are available"+CR+ExceptionInfo())	
+     type : 458752
+   -
+     name : OnDone
+     internal_properties : CAAAAAgAAADRphRiGJdPkZI1pdWLPbTK1b9mWIxdiZ1Qq802rNkyUOiqKJCLJUNUK2sBay6kI29FnDEnco/lhhKhr84UxwrMhRo8ITkmz1uNcc6VX3nLUGuizjC2HWiFBgtaD6MgTV7eBa8x14834DyHt68HEWdryMZm1mcdGMxWJTvTm41e3Q==
+     procedure_id : 1635328430265386123
+     type_code : 12
+     code : |1+
+      // Automatic process of exceptions:   run CASE EXCEPTION:
+      //
+      PROCEDURE VIRTUAL CWizard::OnDone()
+      
+      // Call the procedure for finalizing the window
+      m_FinalizationProcedure()
+      
+      CASE EXCEPTION:
+      dbgAssert(False,"Check whether the local procedure is available"+CR+ExceptionInfo())
+      
+     type : 458752
+  procedure_templates : []
+  property_templates : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+  original_name : cAssistant
+resources :
+ string_res :
+  identifier : 0x3b051d407a11c036
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+  strings :
+   -
+     text :
+      en-GB : Over the maximum number of planes
+     index : 0
+   -
+     text :
+      en-GB : Min array subscript exceeded
+     index : 1
+   -
+     text :
+      en-GB : Plan subscript out of bound
+     index : 2
+   -
+     text :
+      en-GB : "&Done"
+     index : 3
+   -
+     text :
+      en-GB : "&Next >"
+     index : 4
+custom_note :
+ internal_properties : CAAAAAgAAABtB9HWVzrXO2+4NDRVK0vmzaNKrCKqH1DBX30lMmGZ
